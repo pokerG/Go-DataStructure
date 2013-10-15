@@ -2,6 +2,7 @@ package Stack
 
 import (
 	"errors"
+	"fmt"
 )
 
 const defaultSize = 20
@@ -25,7 +26,7 @@ func (a *GoStack) MakeNull() {
 }
 
 func (a GoStack) Empty() error {
-	if a.top > a.maxSize - 1 {
+	if a.top > a.maxSize-1 {
 		return errors.New("The Stack is empty")
 	} else {
 		return nil
@@ -44,7 +45,7 @@ func (a *GoStack) Pop() (interface{}, error) {
 		return 0, a.Empty()
 	}
 	a.top = a.top + 1
-	return a.s[a.top - 1], nil
+	return a.s[a.top-1], nil
 }
 
 func (a *GoStack) Push(x interface{}) error {
@@ -54,5 +55,18 @@ func (a *GoStack) Push(x interface{}) error {
 		a.top = a.top - 1
 		a.s[a.top] = x
 		return nil
+	}
+}
+
+func (a GoStack) Print() {
+	i := a.top
+	for {
+		if i == a.maxSize {
+			break
+		}
+
+		fmt.Print(a.s[i])
+		i = i + 1
+
 	}
 }
