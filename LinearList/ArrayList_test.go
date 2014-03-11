@@ -10,9 +10,14 @@ func Test(t *testing.T) {
 	l.Insert(4, 3)
 	l.Insert(5, 4)
 	l.Insert(6, 5)
-	v, err := l.Delete(2)
-	if err != nil || v != 1 {
+	l.Print()
+	err := l.Delete(2)
+	if err != nil {
 		t.Error("Error")
 	}
-	l.Print()
+	p, _ := l.Find(4)
+	if p != 2 {
+		t.Error("Error")
+	}
+
 }
