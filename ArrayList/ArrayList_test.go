@@ -1,8 +1,8 @@
-package LinearList
+package ArrayList
 
 import "testing"
 
-func Test(t *testing.T) {
+func TestArrayList(t *testing.T) {
 	l := NewArrayList()
 	l.Insert(1, 0)
 	l.Insert(2, 1)
