@@ -7,12 +7,16 @@ import (
 type Datatype interface{}
 
 type Node struct {
-	data Datatype
-	next *Node
+	Data Datatype
+	Next *Node
 }
 
 type LinkedList struct {
-	head *Node
+	Head *Node
+}
+
+func NewNode(Data Datatype, Next *Node) *Node {
+	return &Node{Data, Next}
 }
 
 func NewLinkedList() *LinkedList {
@@ -20,28 +24,28 @@ func NewLinkedList() *LinkedList {
 }
 
 func (this *LinkedList) Insert(n Node) {
-	if (*this).head == nil {
-		(*this).head = &n
+	if (*this).Head == nil {
+		(*this).Head = &n
 		return
 	}
 
-	ptr := (*this).head
-	for (*ptr).next != nil {
-		ptr = (*ptr).next
+	ptr := (*this).Head
+	for (*ptr).Next != nil {
+		ptr = (*ptr).Next
 	}
-	(*ptr).next = &n
+	(*ptr).Next = &n
 }
 
 func (this *LinkedList) Find(dat Datatype) (*Node, bool) {
-	ptr := (*this).head
+	ptr := (*this).Head
 
-	for (*ptr).next != nil {
-		if (*ptr).data == dat {
+	for (*ptr).Next != nil {
+		if (*ptr).Data == dat {
 			return ptr, true
 		}
-		ptr = (*ptr).next
+		ptr = (*ptr).Next
 	}
-	if (*ptr).data == dat {
+	if (*ptr).Data == dat {
 		return ptr, true
 	}
 	return nil, false
@@ -54,35 +58,35 @@ func (this *LinkedList) Delete(dat Datatype) error {
 		return err
 	}
 
-	if (*this).head.data == dat {
-		(*this).head = (*this).head.next
+	if (*this).Head.Data == dat {
+		(*this).Head = (*this).Head.Next
 	}
 
-	ptr := (*this).head
-	for (*ptr).next != nil {
-		if (*ptr).next.data == dat && (*ptr).next.next != nil {
-			(*ptr).next = (*ptr).next.next
-		} else if (*ptr).next.data == dat && (*ptr).next.next == nil {
-			(*ptr).next = nil
+	ptr := (*this).Head
+	for (*ptr).Next != nil {
+		if (*ptr).Next.Data == dat && (*ptr).Next.Next != nil {
+			(*ptr).Next = (*ptr).Next.Next
+		} else if (*ptr).Next.Data == dat && (*ptr).Next.Next == nil {
+			(*ptr).Next = nil
 			return nil
 		}
-		ptr = (*ptr).next
+		ptr = (*ptr).Next
 	}
 	return nil
 }
 
 func (this *LinkedList) Print() {
-	if (*this).head == nil {
+	if (*this).Head == nil {
 		fmt.Println("**WARNING** Printing out an empty list")
 		return
 	}
 
-	ptr := (*this).head
+	ptr := (*this).Head
 	fmt.Println("Linked List: ")
-	for (*ptr).next != nil {
-		fmt.Printf("Node %d -> ", (*ptr).data)
-		ptr = (*ptr).next
+	for (*ptr).Next != nil {
+		fmt.Printf("Node %v -> ", (*ptr).Data)
+		ptr = (*ptr).Next
 	}
-	fmt.Println("Node", (*ptr).data)
+	fmt.Println("Node", (*ptr).Data)
 	return
 }
