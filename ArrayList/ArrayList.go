@@ -75,9 +75,10 @@ func (this *ArrayList) Find(x Datatype) (Pos, error) {
 }
 
 func (this *ArrayList) Print() {
-	fmt.Print("Elements of List: ")
+	fmt.Println("Elements of List: ")
 	for i := 0; i <= this.lastPos; i++ {
-		fmt.Print(this.data[i], " ")
+		fmt.Println(this.data[i], " ")
 	}
+	fmt.Println("")
 
 }
