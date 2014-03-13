@@ -1,4 +1,4 @@
-package ContList
+package CursorList
 
 type Datatype interface{}
 type Cursor int
@@ -20,7 +20,7 @@ type Space struct {
 }
 
 func NewSpaceSize(size int) *Space {
-	return &Space{make([]node, size), size}
+	return &Space{make([]Node, size), size, 0, 0, 0}
 }
 
 func NewSpace() *Space {
@@ -28,8 +28,9 @@ func NewSpace() *Space {
 }
 
 func (this *Space) Init() {
-	for j := 0; j < this.size-1; j++ {
-		this.space[j].next = j + 1
+	var j int
+	for j = 0; j < this.size-1; j++ {
+		this.space[j].next = Cursor(j + 1)
 	}
 	this.space[j].next = -1
 	this.avail = 0
@@ -46,24 +47,24 @@ func (this *Space) getNode() Cursor {
 	return p
 }
 
-func (this *Space) freeNode(Cursor q) {
+func (this *Space) freeNode(q Cursor) {
 	this.space[q].next = this.space[this.avail].next
 	this.space[this.avail].next = q
 }
 
 func (this *Space) Insert(x Datatype, p Position) {
 	var q Position
-	q = this.getNode()
+	q = Position(this.getNode())
 	this.space[q].data = x
 	this.space[q].next = this.space[p].next
-	this.space[p].next = q
+	this.space[p].next = Cursor(q)
 }
 
 func (this *Space) Delete(p Position) {
 	var q Position
 	if this.space[p].next != -1 {
-		q = this.space[p].next
+		q = Position(this.space[p].next)
 		this.space[p].next = this.space[q].next
-		this.freeNode(q)
+		this.freeNode(Cursor(q))
 	}
 }
