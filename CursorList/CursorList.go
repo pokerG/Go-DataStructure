@@ -1,5 +1,7 @@
 package CursorList
 
+import "fmt"
+
 type Datatype interface{}
 type Cursor int
 type Position int
@@ -66,5 +68,11 @@ func (this *Space) Delete(p Position) {
 		q = Position(this.space[p].next)
 		this.space[p].next = this.space[q].next
 		this.freeNode(Cursor(q))
+	}
+}
+
+func (this *Space) Print() {
+	for i := 0; i < this.size; i++ {
+		fmt.Printf("%d--->%d ## %d\n", i, this.space[i].data, this.space[i].next)
 	}
 }
