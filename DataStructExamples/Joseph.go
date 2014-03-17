@@ -49,7 +49,7 @@ func (this *LinkList) Insert(n int) {
 func (this *LinkList) Print() {
 	pCur := this.phead
 	for {
-		fmt.Printf("The %d person.\n", pCur.data)
+		fmt.Printf("No:%d is killed.\n", pCur.data)
 		pCur = pCur.next
 		if pCur == this.phead {
 			break
@@ -70,11 +70,12 @@ func joseph(plist *LinkList, m int) {
 	for i < m-1 {
 		pPre = pPre.next
 		i++
+		pCur = pPre.next
+		pPre.next = pCur.next
+		plist.len--
 	}
-	pCur = pPre.next
-	pPre.next = pCur.next
-	plist.len--
-	fmt.Printf("The last one is: %d\n", pPre.data)
+
+	fmt.Printf("Winner is %d\n", pPre.data)
 }
 
 func main() {
