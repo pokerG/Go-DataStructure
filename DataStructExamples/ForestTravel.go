@@ -1,3 +1,7 @@
+/*
+	Forest travel
+	@pokerG
+*/
 package main
 
 import (
@@ -43,24 +47,27 @@ func PostOrder(t *CSNode) {
 	}
 }
 
-func LeverOrder(t *CSNode) {
+func LeverOrder(t []*CSNode) {
 	var front, rear int
 	front, rear = 0, 0
 	var q [MAXLENGTH]*CSNode
-	if t == nil {
+	if t[0] == nil {
 		return
 	}
-	rear++
-	q[rear] = t
-	fmt.Printf("%s ", t.data)
+	for _, v := range t {
+		rear++
+		q[rear] = v
+		fmt.Printf("%s ", v.data)
+	}
+	var tmp *CSNode
 	for front != rear {
 		front++
-		t = q[front].fchild
-		for t != nil {
-			fmt.Printf("%s ", t.data)
+		tmp = q[front].fchild
+		for tmp != nil {
+			fmt.Printf("%s ", tmp.data)
 			rear++
-			q[rear] = t
-			t = t.rsib
+			q[rear] = tmp
+			tmp = tmp.rsib
 		}
 	}
 	fmt.Println("")
@@ -68,13 +75,25 @@ func LeverOrder(t *CSNode) {
 
 func main() {
 	//test data A B D # E I # # F # # C G # H # # # #
-	t := CreateCT()
+	var t []*CSNode
+	var n int
+	fmt.Println("Input the number of tree:")
+	fmt.Scanf("%d\n", &n)
+	t = make([]*CSNode, n)
+	for i, _ := range t {
+		t[i] = CreateCT()
+	}
 	fmt.Println("PreOrder:")
-	PreOrder(t)
-	fmt.Println("")
+	for _, v := range t {
+		PreOrder(v)
+		fmt.Println("")
+	}
+
 	fmt.Println("PostOrder:")
-	PostOrder(t)
-	fmt.Println("")
+	for _, v := range t {
+		PostOrder(v)
+		fmt.Println("")
+	}
 	fmt.Println("LeverOrder:")
 	LeverOrder(t)
 	fmt.Println("")
