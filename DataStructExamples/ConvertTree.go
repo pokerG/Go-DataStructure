@@ -6,22 +6,23 @@
 package main
 
 import (
-	"bufio"
+	// "bufio"
 	"fmt"
-	"os"
-	"strconv"
-	"strings"
+	// "os"
+	// "strconv"
+	// "strings"
 )
 
 const MAXSIZE int = 20
 
 type CTNode struct { //forest child node
-	child int
-	next  *CTNode
+	sign int
+	next *CTNode
 }
 
 type CTBox struct { //forest header node
-	data       int
+	data       string
+	parent     int
 	firstchild *CTNode
 }
 
@@ -31,8 +32,124 @@ type CTree struct { //forest
 }
 
 type Bnode struct { //binaryTree node
-	data           int
+	data string
+	// sign           int
 	lchild, rchild *Bnode
+}
+
+var visited [MAXSIZE]bool
+
+/*
+ test data:
+a -1
+b 0
+c 0
+k 2
+d -1
+e 4
+f 4
+# 0
+
+a -1
+b 0
+c 0
+d 1
+e 1
+f 1
+g 2
+h 2
+i 4
+# 0
+*/
+
+func main() {
+	// ct := CreateCT()
+
+	// bt := ForestToBt(ct, -1)
+	// BTPrint(bt)
+	ct := &CTree{}
+	bt := CreateBT()
+	BTPrint(bt)
+	fmt.Println("")
+	BtToForest(bt, ct, "")
+	for i := 0; i < ct.n; i++ {
+		for j := 0; j < ct.n; j++ {
+			if ct.nodes[j].parent == i {
+				tmp := ct.nodes[i].firstchild
+				n := &CTNode{j, nil}
+				ct.nodes[i].firstchild = n
+				n.next = tmp
+			}
+		}
+	}
+	CTPrint(ct)
+}
+
+func BtToForest(bt *Bnode, ct *CTree, s string) {
+	if bt == nil {
+		return
+	}
+	// fmt.Println("!!", bt.data)
+	a := Find(ct, s)
+	if a == -1 {
+		ct.nodes[ct.n].data = bt.data
+		ct.nodes[ct.n].parent = Find(ct, s)
+		ct.n++
+	}
+
+	tmp := bt.lchild
+	if tmp != nil {
+		ct.nodes[ct.n].data = tmp.data
+		ct.nodes[ct.n].parent = Find(ct, bt.data)
+		ct.n++
+		tmp = tmp.rchild
+	}
+
+	for tmp != nil {
+		// fmt.Println(tmp.data)
+		x := Find(ct, tmp.data)
+		if x == -1 {
+			ct.nodes[ct.n].data = tmp.data
+			ct.nodes[ct.n].parent = Find(ct, bt.data)
+			ct.n++
+		}
+		tmp = tmp.rchild
+	}
+	// fmt.Println(ct)
+	BtToForest(bt.lchild, ct, bt.data)
+	if s == "" {
+		BtToForest(bt.rchild, ct, "")
+	}
+}
+
+func Find(ct *CTree, s string) int {
+	for i := 0; i < ct.n; i++ {
+		if s == ct.nodes[i].data {
+			return i
+		}
+	}
+	return -1
+}
+func ForestToBt(ct *CTree, parent int) *Bnode {
+	var tmp int = -1
+	bt := &Bnode{}
+	for i := 0; i < ct.n; i++ {
+		if ct.nodes[i].parent == parent && !visited[i] {
+			tmp = i
+			break
+		}
+	}
+
+	if tmp == -1 {
+		return nil
+	}
+	visited[tmp] = true
+	fmt.Println(tmp, ct.nodes[tmp].data)
+	bt.data = ct.nodes[tmp].data
+
+	bt.lchild = ForestToBt(ct, tmp)
+	bt.rchild = ForestToBt(ct, parent)
+	return bt
 }
 
 func CreateBT() *Bnode {
@@ -42,7 +159,7 @@ func CreateBT() *Bnode {
 	if ch == "#" {
 		t = nil
 	} else {
-		t.data, _ = strconv.Atoi(ch)
+		t.data = ch
 		t.lchild = CreateBT()
 		t.rchild = CreateBT()
 	}
@@ -52,44 +169,58 @@ func CreateBT() *Bnode {
 func CreateCT() *CTree {
 	t := &CTree{}
 	t.n = 0
-	fmt.Println("Please input the node data:(0 is end)")
+	fmt.Println("Please input the node data and its parent number(# 0 is end)")
 	for {
-		var ch int
-		fmt.Scanf("%d", &ch)
-		if ch != 0 {
-			t.nodes[t.n].data = ch
+		var ch1 string
+		var ch2 int
+		fmt.Scanf("%s %d\n", &ch1, &ch2)
+		// fmt.Println(ch1, ch2)
+		if ch1 != "#" || ch2 != 0 {
+			t.nodes[t.n].data = ch1
+			t.nodes[t.n].parent = ch2
 			t.nodes[t.n].firstchild = nil
 			t.n++
+		} else {
+			break
 		}
 	}
+	// fmt.Println("!!!")
 	for i := 0; i < t.n; i++ {
-		fmt.Printf("Please input the %dth node's childs:")
-		reader := bufio.NewReader(os.Stdin)
-		data, _, _ := reader.ReadLine()
-		command := string(data)
-		children := strings.Fields(command)
-		for _, v := range children {
-			tmp := t.nodes[i].firstchild
-			data, _ := strconv.Atoi(v)
-			n := &CTNode{data, nil}
-			t.nodes[i].firstchild = n
-			n.next = tmp
+		for j := 0; j < t.n; j++ {
+			if t.nodes[j].parent == i {
+				tmp := t.nodes[i].firstchild
+				n := &CTNode{j, nil}
+				t.nodes[i].firstchild = n
+				n.next = tmp
+			}
 		}
 	}
 	return t
 }
 
-var visited [MAXSIZE]bool
-
-func ForestToBt(ct *CTree, bt *Bnode) {
-	if ct.n == 0 {
-		bt = nil
-		return
-	}
-	for i := 0; i <= ct.n; i++ {
-		if !visited[i] {
-			PreOrder(ct.nodes[i])
+func BTPrint(bt *Bnode) {
+	if bt != nil {
+		fmt.Print(bt.data)
+		if bt.lchild != nil || bt.rchild != nil {
+			fmt.Print("(")
+			BTPrint(bt.lchild)
+			if bt.rchild != nil {
+				fmt.Print(",")
+			}
+			BTPrint(bt.rchild)
+			fmt.Print(")")
 		}
 	}
+}
 
+func CTPrint(ct *CTree) {
+	for i := 0; i < ct.n; i++ {
+		fmt.Print(ct.nodes[i].data, " ", ct.nodes[i].parent, ":  ")
+		tmp := ct.nodes[i].firstchild
+		for tmp != nil {
+			fmt.Print(ct.nodes[tmp.sign].data, " ")
+			tmp = tmp.next
+		}
+		fmt.Println("")
+	}
 }
