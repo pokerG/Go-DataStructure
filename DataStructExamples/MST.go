@@ -28,13 +28,29 @@ test data:
 
 */
 
+type c struct {
+	a, b int
+}
+
 func main() {
 	g := MiniSpanTree.NewGraph()
 	g.Print()
+
 	fmt.Println("Kruskal:")
 	g.Kruskal()
+
 	fmt.Println("Prim:")
 	g.Prim()
+	dis := g.Dijkstra()
+	fmt.Println(dis)
+	p := g.Floyd()
+	for i := 0; i < 5; i++ {
+		for j := 0; j < 5; j++ {
+			fmt.Print(p[i*5+j], " ")
+		}
+		fmt.Println("")
+	}
+	// fmt.Println(p)
 	// var a [][]int
 	// a = make([10][10]int, 10)
 
@@ -43,4 +59,9 @@ func main() {
 	// a := []int{1, 3, 2, 4, 5}
 	// sort.Ints(a)
 	// fmt.Println(a)
+	// t1 := &c{1, 2}
+	// t2 := t1
+	// fmt.Println(&t1, &t2)
+	// t2.a = 2
+	// fmt.Println(t1, t2)
 }

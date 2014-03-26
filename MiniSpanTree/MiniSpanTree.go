@@ -44,9 +44,10 @@ func (this *Graph) Print() {
 	}
 }
 
-func (this *Graph) Kruskal() {
+func (a *Graph) Kruskal() {
 	var bnf, edf int
 	var parent [maxSize]int
+	this := a.copy()
 	e := newEdges(this)
 	sort(e)
 	for i := 0; i < this.n; i++ {
@@ -63,10 +64,11 @@ func (this *Graph) Kruskal() {
 
 }
 
-func (this *Graph) Prim() {
+func (a *Graph) Prim() {
 	var lowcost, closet []int
 	var i, j, k int
 	var min int
+	this := a.copy()
 	lowcost = make([]int, this.n)
 	closet = make([]int, this.n)
 	for i, _ := range this.edge {
@@ -143,4 +145,85 @@ func find(x int, p *[maxSize]int) int {
 	}
 	p[x] = find(p[x], p)
 	return p[x]
+}
+
+func (a *Graph) Dijkstra() []int {
+	var k int
+	var used []bool
+	var dis []int
+	this := a.copy()
+	// fmt.Println(&a, &this)
+	used = make([]bool, this.n)
+	dis = make([]int, this.n)
+	for i, _ := range this.edge {
+		if this.edge[i] != 0 {
+			this.edge[i%this.n*this.n+i/this.n] = this.edge[i]
+		}
+		if this.edge[i] == 0 {
+			this.edge[i] = infinity
+		}
+	}
+	for i := 0; i < this.n; i++ {
+		dis[i] = this.edge[i]
+	}
+	for i := 0; i < this.n-1; i++ {
+		tmin := infinity
+		for j := 0; j < this.n; j++ {
+			if !used[j] && tmin > dis[j] {
+				tmin = dis[j]
+				k = j
+			}
+		}
+		used[k] = true
+		for j := 0; j < this.n; j++ {
+			if dis[k]+this.edge[k*this.n+j] < dis[j] {
+				dis[j] = dis[k] + this.edge[k*this.n+j]
+			}
+		}
+	}
+	// a.Print()
+	// this.Print()
+	return dis
+}
+
+func (a *Graph) Floyd() []int {
+	var d, p []int
+	this := a.copy()
+	d = make([]int, this.n*this.n)
+	p = make([]int, this.n*this.n)
+
+	for i, _ := range this.edge {
+		if this.edge[i] != 0 {
+			this.edge[i%this.n*this.n+i/this.n] = this.edge[i]
+		}
+		if this.edge[i] == 0 {
+			this.edge[i] = infinity
+		}
+	}
+
+	for i, v := range this.edge {
+		d[i] = v
+		p[i] = -1
+	}
+	for k := 0; k < this.n; k++ {
+		for i := 0; i < this.n; i++ {
+			for j := 0; j < this.n; j++ {
+				if d[i*this.n+k]+d[k*this.n+j] < d[i*this.n+j] {
+					d[i*this.n+j] = d[i*this.n+k] + d[k*this.n+j]
+					p[i*this.n+j] = k
+				}
+			}
+		}
+	}
+	return d
+}
+func (a *Graph) copy() *Graph {
+	this := &Graph{}
+	this.n = a.n
+	this.e = a.e
+	this.edge = make([]int, this.n*this.n)
+	for i, v := range a.edge {
+		this.edge[i] = v
+	}
+	return this
 }
