@@ -4,6 +4,14 @@ import (
 	"fmt"
 )
 
+/*
+test data
+a 0.15
+b 0.45
+c 0.25
+d 0.20
+e 0.08
+*/
 const n int = 5         //the number of leaf
 const m int = (2*n - 1) //the number of node
 const maxVal float64 = 10000.0

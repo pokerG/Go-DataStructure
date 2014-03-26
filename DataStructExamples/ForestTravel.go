@@ -8,6 +8,8 @@ import (
 	"fmt"
 )
 
+//test data A B D # E I # # F # # C G # H # # # #
+
 const MAXLENGTH int = 20
 
 type CSNode struct {
@@ -74,7 +76,6 @@ func LeverOrder(t []*CSNode) {
 }
 
 func main() {
-	//test data A B D # E I # # F # # C G # H # # # #
 	var t []*CSNode
 	var n int
 	fmt.Println("Input the number of tree:")

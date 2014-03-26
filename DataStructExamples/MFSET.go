@@ -8,6 +8,16 @@ import (
 	"fmt"
 )
 
+/*
+ test data:
+2 4
+2 6
+4 8
+1 3
+3 7
+1 5
+5 9
+*/
 const n int = 10
 
 type node struct {

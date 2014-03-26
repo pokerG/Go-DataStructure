@@ -8,6 +8,11 @@ import (
 
 // import "strconv"
 // import "reflect"
+/*
+test data
+10
+1 87 2 34 65 12 45 28 90 10
+*/
 
 var A []int
 

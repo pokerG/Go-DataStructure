@@ -60,29 +60,32 @@ g 2
 h 2
 i 4
 # 0
+
+A B D H # # I # # E # # C F # J # # G # #
 */
 
 func main() {
-	// ct := CreateCT()
+	ct := CreateCT()
 
-	// bt := ForestToBt(ct, -1)
-	// BTPrint(bt)
-	ct := &CTree{}
-	bt := CreateBT()
+	bt := ForestToBt(ct, -1)
 	BTPrint(bt)
 	fmt.Println("")
-	BtToForest(bt, ct, "")
-	for i := 0; i < ct.n; i++ {
-		for j := 0; j < ct.n; j++ {
-			if ct.nodes[j].parent == i {
-				tmp := ct.nodes[i].firstchild
-				n := &CTNode{j, nil}
-				ct.nodes[i].firstchild = n
-				n.next = tmp
-			}
-		}
-	}
-	CTPrint(ct)
+	// ct := &CTree{}
+	// bt := CreateBT()
+	// BTPrint(bt)
+	// fmt.Println("")
+	// BtToForest(bt, ct, "")
+	// for i := 0; i < ct.n; i++ {
+	// 	for j := 0; j < ct.n; j++ {
+	// 		if ct.nodes[j].parent == i {
+	// 			tmp := ct.nodes[i].firstchild
+	// 			n := &CTNode{j, nil}
+	// 			ct.nodes[i].firstchild = n
+	// 			n.next = tmp
+	// 		}
+	// 	}
+	// }
+	// CTPrint(ct)
 }
 
 func BtToForest(bt *Bnode, ct *CTree, s string) {
