@@ -1,4 +1,4 @@
-package MiniSpanTree
+package matrixGraph
 
 import (
 	"fmt"
@@ -156,9 +156,6 @@ func (a *Graph) Dijkstra() []int {
 	used = make([]bool, this.n)
 	dis = make([]int, this.n)
 	for i, _ := range this.edge {
-		if this.edge[i] != 0 {
-			this.edge[i%this.n*this.n+i/this.n] = this.edge[i]
-		}
 		if this.edge[i] == 0 {
 			this.edge[i] = infinity
 		}
@@ -166,16 +163,21 @@ func (a *Graph) Dijkstra() []int {
 	for i := 0; i < this.n; i++ {
 		dis[i] = this.edge[i]
 	}
+	used[0] = true
+
 	for i := 0; i < this.n-1; i++ {
 		tmin := infinity
-		for j := 0; j < this.n; j++ {
+		for j := 1; j < this.n; j++ {
 			if !used[j] && tmin > dis[j] {
 				tmin = dis[j]
 				k = j
 			}
 		}
 		used[k] = true
-		for j := 0; j < this.n; j++ {
+		for j := 1; j < this.n; j++ {
+			if used[j] {
+				continue
+			}
 			if dis[k]+this.edge[k*this.n+j] < dis[j] {
 				dis[j] = dis[k] + this.edge[k*this.n+j]
 			}
@@ -193,9 +195,6 @@ func (a *Graph) Floyd() []int {
 	p = make([]int, this.n*this.n)
 
 	for i, _ := range this.edge {
-		if this.edge[i] != 0 {
-			this.edge[i%this.n*this.n+i/this.n] = this.edge[i]
-		}
 		if this.edge[i] == 0 {
 			this.edge[i] = infinity
 		}

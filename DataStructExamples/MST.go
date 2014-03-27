@@ -5,7 +5,7 @@ import (
 	"fmt"
 	// "os"
 	// "strings"
-	"MiniSpanTree"
+	"matrixGraph"
 	// "sort"
 )
 
@@ -33,7 +33,7 @@ type c struct {
 }
 
 func main() {
-	g := MiniSpanTree.NewGraph()
+	g := matrixGraph.NewGraph()
 	g.Print()
 
 	fmt.Println("Kruskal:")
