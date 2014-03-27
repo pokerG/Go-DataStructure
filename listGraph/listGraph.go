@@ -16,7 +16,7 @@ type node struct { //out-edge form
 }
 
 type vertexhead struct { //vertex form
-	vertex    vertexData
+	vertex    vertexData //not use
 	firstedge *node
 }
 
@@ -27,8 +27,10 @@ type Graph struct { //Graph's list struct
 
 var act []int    // use in Crucialpath
 var ve, vl []int // use in Crucialpath
-var size int
 
+var count int //use in FindArticul
+var dnf []int //use in FindArticul
+var low []int //use in FindArticul
 func NewGraph() *Graph {
 	g := &Graph{}
 	var tail, head, weight int
@@ -123,7 +125,6 @@ func (a *Graph) Crucialpath() {
 	act = make([]int, a.n*a.n)
 	ve = make([]int, a.n)
 	vl = make([]int, a.n)
-	size = a.n
 	for i := 0; i < a.n; i++ {
 		tmp := a.headlist[i].firstedge
 		for tmp != nil {
@@ -294,26 +295,6 @@ func (a *Graph) backward() {
 	}
 }
 
-// func (a *Graph) copy() *Graph {
-// 	this := &Graph{}
-// 	this.n = a.n
-// 	this.e = a.e
-// 	this.headlist = make([]vertexhead, this.n)
-
-// 	this.edge = make([]int, this.n*this.n)
-// 	for i, v := range a.edge {
-// 		this.edge[i] = v
-// 	}
-// 	return this
-// }
-
-// func e(k, m int) int {
-// 	return ve[k]
-// }
-// func l(k, m int) int {
-// 	return vl[m] - act[k*size+m]
-// }
-
 func (a *Graph) reverse() *Graph { //tail and head reverse
 	b := &Graph{}
 	b.n = a.n
@@ -331,4 +312,139 @@ func (a *Graph) reverse() *Graph { //tail and head reverse
 		}
 	}
 	return b
+}
+
+func (a *Graph) deleteDirect() *Graph {
+	b := &Graph{}
+	b.n = a.n
+	b.e = a.e
+	b.headlist = make([]vertexhead, b.n)
+	for i := 0; i < a.n; i++ {
+		tmp := a.headlist[i].firstedge
+		for tmp != nil {
+			p := &node{}
+			p.adjvex = tmp.adjvex
+			p.cost = tmp.cost
+			p.next = b.headlist[i].firstedge
+			b.headlist[i].firstedge = p
+			tmp2 := b.headlist[tmp.adjvex].firstedge
+			for tmp2 != nil {
+				if tmp2.adjvex == i {
+					goto flag
+				}
+				tmp2 = tmp2.next
+			}
+			p = &node{}
+			p.adjvex = i
+			p.cost = tmp.cost
+			p.next = b.headlist[tmp.adjvex].firstedge
+			b.headlist[tmp.adjvex].firstedge = p
+		flag:
+			tmp = tmp.next
+		}
+	}
+	return b
+}
+
+func (a *Graph) FindArticul() {
+	b := a.deleteDirect()
+	// b.Print()
+	count = 1
+	dnf = make([]int, b.n)
+	low = make([]int, b.n)
+	dnf[0] = 1
+	for i := 1; i < b.n; i++ {
+		dnf[i] = 0
+	}
+	p := b.headlist[0].firstedge
+	v := p.adjvex
+
+	a.dfsArticul(v)
+	if count < b.n {
+		fmt.Print("0 ")
+		for p.next != nil {
+			p = p.next
+			v = p.adjvex
+			if dnf[v] == 0 {
+				b.dfsArticul(v)
+			}
+		}
+	}
+}
+
+func (a *Graph) dfsArticul(x int) {
+	min := count
+	dnf[x] = min
+	count++
+	for p := a.headlist[x].firstedge; p != nil; p = p.next {
+		w := p.adjvex
+		if dnf[w] == 0 {
+			a.dfsArticul(w)
+			if low[w] < min {
+				min = low[w]
+			}
+			if low[w] >= dnf[x] {
+				// fmt.Print("!!!!!")
+				fmt.Print(x, " ")
+			}
+
+		} else if dnf[w] < min {
+			min = dnf[w]
+		}
+	}
+	low[x] = min
+}
+
+var visited []bool
+var inOrder []int
+
+// var count int
+func (a *Graph) Korasaju() {
+	k := 1
+	visited = make([]bool, a.n)
+	inOrder = make([]int, a.n)
+	for i := 0; i < a.n; i++ {
+		visited[i] = false
+	}
+	count = 0
+	for i := 0; i < a.n; i++ {
+		if !visited[i] {
+			dfs(a, i)
+		}
+	}
+	for i := 0; i < a.n; i++ {
+		visited[i] = false
+	}
+	b := a.reverse()
+	for i := b.n - 1; i >= 0; i-- {
+		v := inOrder[i]
+		if !visited[v] {
+			fmt.Printf("\nThe %dth connected component vertex: ", k)
+			k++
+			revDfs(b, v)
+			fmt.Println("")
+		}
+
+	}
+}
+
+func dfs(g *Graph, x int) {
+	visited[x] = true
+	for p := g.headlist[x].firstedge; p != nil; p = p.next {
+		if !visited[p.adjvex] {
+			dfs(g, p.adjvex)
+		}
+	}
+	inOrder[count] = x
+	count++
+}
+
+func revDfs(g *Graph, x int) {
+	visited[x] = true
+	fmt.Print(x, " ")
+	for p := g.headlist[x].firstedge; p != nil; p = p.next {
+		if !visited[p.adjvex] {
+			revDfs(g, p.adjvex)
+		}
+	}
 }
