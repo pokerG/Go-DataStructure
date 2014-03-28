@@ -319,6 +319,41 @@ func (a *Graph) deleteDirect() *Graph {
 	b.n = a.n
 	b.e = a.e
 	b.headlist = make([]vertexhead, b.n)
+	// edge := make([]int, b.n*b.n)
+	// for i := 0; i < a.n; i++ {
+	// 	tmp := a.headlist[i].firstedge
+	// 	for tmp != nil {
+	// 		edge[i*a.n+tmp.adjvex] = tmp.cost
+	// 		edge[tmp.adjvex*a.n+i] = tmp.cost
+	// 		tmp = tmp.next
+	// 	}
+	// }
+	// // fmt.Println("!!")
+	// for i := 0; i < b.n; i++ {
+	// 	for j := 0; j < b.n; j++ {
+	// 		// fmt.Println(i*b.n+j, len(edge))
+	// 		if edge[i*b.n+j] > 0 {
+	// 			tmp := b.headlist[i].firstedge
+	// 			if tmp == nil {
+	// 				p := &node{}
+	// 				p.adjvex = j
+	// 				p.cost = edge[i*b.n+j]
+	// 				p.next = nil
+	// 				b.headlist[i].firstedge = p
+	// 			} else {
+	// 				p := tmp
+	// 				for tmp != nil {
+	// 					p = tmp
+	// 					tmp = tmp.next
+	// 				}
+	// 				tmp = &node{}
+	// 				tmp.adjvex = j
+	// 				tmp.next = nil
+	// 				p.next = tmp
+	// 			}
+	// 		}
+	// 	}
+	// }
 	for i := 0; i < a.n; i++ {
 		tmp := a.headlist[i].firstedge
 		for tmp != nil {
@@ -348,7 +383,7 @@ func (a *Graph) deleteDirect() *Graph {
 
 func (a *Graph) FindArticul() {
 	b := a.deleteDirect()
-	// b.Print()
+	b.Print()
 	count = 1
 	dnf = make([]int, b.n)
 	low = make([]int, b.n)
@@ -357,7 +392,8 @@ func (a *Graph) FindArticul() {
 	p := b.headlist[0].firstedge
 	v := p.adjvex
 
-	a.dfsArticul(v)
+	//a.dfsArticul(v) fuck this!!!!!!
+	b.dfsArticul(v)
 	if count < b.n {
 		fmt.Print("0 ")
 		for p.next != nil {
@@ -370,28 +406,29 @@ func (a *Graph) FindArticul() {
 	}
 }
 
-func (a *Graph) dfsArticul(x int) {
+func (a *Graph) dfsArticul(v int) {
 	count++
 	min := count
-	dnf[x] = min
-
-	for p := a.headlist[x].firstedge; p != nil; p = p.next {
+	dnf[v] = min
+	// fmt.Println("!!!", v)
+	for p := a.headlist[v].firstedge; p != nil; p = p.next {
 		w := p.adjvex
+		// fmt.Println("###", w)
 		if dnf[w] == 0 {
 			a.dfsArticul(w)
 			if low[w] < min {
 				min = low[w]
 			}
-			if low[w] >= dnf[x] {
+			if low[w] >= dnf[v] {
 				// fmt.Print("!!!!!")
-				fmt.Print(x, " ")
+				fmt.Print(v, " ")
 			}
 
 		} else if dnf[w] < min {
 			min = dnf[w]
 		}
 	}
-	low[x] = min
+	low[v] = min
 }
 
 var visited []bool
