@@ -353,9 +353,7 @@ func (a *Graph) FindArticul() {
 	dnf = make([]int, b.n)
 	low = make([]int, b.n)
 	dnf[0] = 1
-	for i := 1; i < b.n; i++ {
-		dnf[i] = 0
-	}
+
 	p := b.headlist[0].firstedge
 	v := p.adjvex
 
@@ -373,9 +371,10 @@ func (a *Graph) FindArticul() {
 }
 
 func (a *Graph) dfsArticul(x int) {
+	count++
 	min := count
 	dnf[x] = min
-	count++
+
 	for p := a.headlist[x].firstedge; p != nil; p = p.next {
 		w := p.adjvex
 		if dnf[w] == 0 {
