@@ -1,4 +1,4 @@
 Go-DataStructure
 ================
 
-Use Golang in DataStructure operate
+Use Golang in DataStructure operate (homework)
