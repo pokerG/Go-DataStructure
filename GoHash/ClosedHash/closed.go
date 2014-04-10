@@ -37,7 +37,7 @@ func (this *HashTable) search(k int, c *int) (int, error) {
 	// fmt.Println(k, p)
 	for this.elem[p].key != 0 && !(k == this.elem[p].key) {
 		(*c)++
-		fmt.Println(*c)
+		// fmt.Println(*c)
 		if *c < HashSize {
 			collision(&p, *c)
 		} else {
@@ -67,13 +67,16 @@ func (this *HashTable) Insert(e ElemType) error {
 
 }
 
-func (this *HashTable) Find(k int) {
+func (this *HashTable) Find(k int) bool {
 	c := 0
-	p, err := this.search(k, &c)
+	// p, err := this.search(k, &c)
+	_, err := this.search(k, &c)
 	if err == nil {
-		fmt.Printf("The element is %v  , address is %d\n", this.elem[p], p)
+		// fmt.Printf("The element is %v  , address is %d\n", this.elem[p], p)
+		return true
 	} else {
-		fmt.Println(err)
+		// fmt.Println(err)
+		return false
 	}
 }
 

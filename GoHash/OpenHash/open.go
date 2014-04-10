@@ -61,12 +61,15 @@ func (this *HashTable) Insert(e ElemType) error {
 
 }
 
-func (this *HashTable) Find(k int) {
-	p, r := this.search(k)
+func (this *HashTable) Find(k int) bool {
+	// p, r := this.search(k)
+	_, r := this.search(k)
 	if r != nil {
-		fmt.Printf("The element is %v  , address is %d\n", r, p)
+		// fmt.Printf("The element is %v  , address is %d\n", r, p)
+		return true
 	} else {
-		fmt.Println(Unfind)
+		// fmt.Println(Unfind)
+		return false
 	}
 }
 
