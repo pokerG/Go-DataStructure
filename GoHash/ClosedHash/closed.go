@@ -1,12 +1,14 @@
 package ClosedHash
 
 import (
+	"GoHash"
 	"errors"
 	"fmt"
 )
 
 const N int = 100 // the size of data
 var HashSize int  // the size of hash table
+var HashType int  // the hash func
 
 var (
 	Duplicate = errors.New("There already have the element!")
@@ -25,7 +27,16 @@ type HashTable struct {
 }
 
 func hash(k int) int {
-	return k % HashSize
+	// fmt.Println(HashType)
+	switch HashType {
+	case 0:
+		return GoHash.HashDiv(k, HashSize)
+	case 1:
+		return GoHash.HashMul(k, HashSize)
+	default:
+		return GoHash.HashDiv(k, HashSize)
+	}
+
 }
 
 func collision(p *int, d int) {

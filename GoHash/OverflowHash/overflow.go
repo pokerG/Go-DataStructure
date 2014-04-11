@@ -1,13 +1,14 @@
 package OverflowHash
 
 import (
+	"GoHash"
 	"errors"
 	"fmt"
 )
 
 const N int = 100 // the size of data
 var HashSize int  // the size of hash table
-
+var HashType int  // the hash func
 var (
 	Duplicate = errors.New("There already have the element!")
 	Unfind    = errors.New("Not Found!")
@@ -26,7 +27,15 @@ type HashTable struct {
 }
 
 func hash(k int) int {
-	return k % HashSize
+	switch HashType {
+	case 0:
+		return GoHash.HashDiv(k, HashSize)
+	case 1:
+		return GoHash.HashMul(k, HashSize)
+	default:
+		return GoHash.HashDiv(k, HashSize)
+	}
+
 }
 
 func (this *HashTable) search(k int) (int, *ElemType) {

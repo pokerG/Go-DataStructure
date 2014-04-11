@@ -1,0 +1,27 @@
+mode: set
+GoHash/ClosedHash/closed.go:27.22,29.2 1 1
+GoHash/ClosedHash/closed.go:31.31,33.2 1 1
+GoHash/ClosedHash/closed.go:35.59,38.56 2 1
+GoHash/ClosedHash/closed.go:48.2,48.27 1 1
+GoHash/ClosedHash/closed.go:38.56,41.20 2 1
+GoHash/ClosedHash/closed.go:41.20,43.4 1 1
+GoHash/ClosedHash/closed.go:43.5,44.9 1 1
+GoHash/ClosedHash/closed.go:48.27,50.3 1 0
+GoHash/ClosedHash/closed.go:50.4,52.3 1 1
+GoHash/ClosedHash/closed.go:55.49,58.16 3 1
+GoHash/ClosedHash/closed.go:58.16,60.3 1 0
+GoHash/ClosedHash/closed.go:60.4,66.3 3 1
+GoHash/ClosedHash/closed.go:70.41,74.16 3 1
+GoHash/ClosedHash/closed.go:74.16,77.3 1 0
+GoHash/ClosedHash/closed.go:77.4,80.3 1 1
+GoHash/ClosedHash/closed.go:83.44,86.16 3 0
+GoHash/ClosedHash/closed.go:86.16,90.3 3 0
+GoHash/ClosedHash/closed.go:90.4,92.3 1 0
+GoHash/ClosedHash/closed.go:94.57,96.32 2 0
+GoHash/ClosedHash/closed.go:96.32,97.28 1 0
+GoHash/ClosedHash/closed.go:97.28,99.4 1 0
+GoHash/ClosedHash/closed.go:103.31,105.2 1 0
+GoHash/ClosedHash/closed.go:107.40,113.32 6 1
+GoHash/ClosedHash/closed.go:116.2,116.10 1 1
+GoHash/ClosedHash/closed.go:113.32,115.3 1 1
+GoHash/ClosedHash/closed.go:119.42,121.2 1 1
