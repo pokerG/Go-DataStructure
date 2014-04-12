@@ -32,6 +32,8 @@ func hash(k int) int {
 		return GoHash.HashDiv(k, HashSize)
 	case 1:
 		return GoHash.HashMul(k, HashSize)
+	case 2:
+		return GoHash.HashBit(k, HashSize)
 	default:
 		return GoHash.HashDiv(k, HashSize)
 	}
@@ -40,7 +42,7 @@ func hash(k int) int {
 
 func (this *HashTable) search(k int) (int, *ElemType) {
 	p := hash(k)
-	// fmt.Println(k, p)
+	fmt.Println(k, p)
 	tmp := this.elem[p].next
 	for tmp != nil {
 		if tmp.key == k {

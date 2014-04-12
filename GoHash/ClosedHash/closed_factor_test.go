@@ -8,8 +8,8 @@ import (
 var factorsize int = 100000
 
 func factorinti(factor int) *HashTable {
-	ch := NewHashTable(factorsize)
 	HashType = 0
+	ch := NewHashTable(factorsize)
 	for i := 0; i < factor; i++ {
 		k := rand.Int()
 		d := rand.Int()

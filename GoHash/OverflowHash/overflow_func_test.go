@@ -5,10 +5,10 @@ import (
 	"testing"
 )
 
-var size int = 100
+var size int = 100000
 
 func funcinti(factor int) *HashTable {
-	ch := NewHashTable(factorsize)
+	ch := NewHashTable(size)
 	for i := 0; i < factor; i++ {
 		k := rand.Int()
 		d := rand.Int()
@@ -19,8 +19,8 @@ func funcinti(factor int) *HashTable {
 }
 
 func BenchmarkHashDiv(b *testing.B) {
-	ch := funcinti(30)
 	HashType = 0
+	ch := funcinti(30000)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		ch.Find(rand.Int())
@@ -28,8 +28,18 @@ func BenchmarkHashDiv(b *testing.B) {
 }
 
 func BenchmarkHashMul(b *testing.B) {
-	ch := funcinti(30)
 	HashType = 1
+	ch := funcinti(30000)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		ch.Find(rand.Int())
+	}
+}
+
+func BenchmarkHashBit(b *testing.B) {
+	HashType = 2
+	ch := funcinti(30000)
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		ch.Find(rand.Int())

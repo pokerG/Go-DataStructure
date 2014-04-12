@@ -8,8 +8,9 @@ import (
 var factor float32 = 0.3
 
 func sizeinit(size int) *HashTable {
-	ch := NewHashTable(size)
 	HashType = 0
+	ch := NewHashTable(size)
+
 	for i := 0; i < int(float32(size)*factor); i++ {
 		k := rand.Int()
 		d := rand.Int()

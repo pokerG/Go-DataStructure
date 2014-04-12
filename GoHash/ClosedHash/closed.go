@@ -33,6 +33,8 @@ func hash(k int) int {
 		return GoHash.HashDiv(k, HashSize)
 	case 1:
 		return GoHash.HashMul(k, HashSize)
+	case 2:
+		return GoHash.HashBit(k, HashSize)
 	default:
 		return GoHash.HashDiv(k, HashSize)
 	}
