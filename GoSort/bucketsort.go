@@ -39,7 +39,7 @@ func radix(a []int, m int) {
 
 		}
 	}
-	tempNum := int(math.Pow(10, float64(m-1))) // 1, 10 ,100...
+	tempNum := int(math.Pow10(m - 1)) // 1, 10 ,100...
 	for i := 0; i < len(a); i++ {
 		rowIndex := (a[i] / tempNum) % 10
 		for j := 0; j < len(a); j++ {
