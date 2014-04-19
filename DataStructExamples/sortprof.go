@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-const MAX int = 10000
+const MAX int = 100000
 
 var largest int //data <= largest
 
@@ -140,15 +140,22 @@ func testTime(sort func([]int), td func(int) []int, rd bool) []Coordinate.Node {
 	// MAX / cx1
 	for i := 10; i <= MAX; i = i * 10 {
 		if rd {
-			var tq int64
-			for j := 0; j < 5; j++ {
-				A := td(i)
-				t := time.Now()
-				sort(A)
-				tq += time.Since(t).Nanoseconds()
-			}
-			tq = tq / 5
-			node[int(math.Log10(float64(i)))-1] = *Coordinate.NewNode(int(math.Log10(float64(i)))*cx1/num, int(tq/1000)) // us
+			// var tq float64
+			// for j := 0; j < 5; j++ {
+			// 	A := td(i)
+			// 	t := time.Now()
+			// 	sort(A)
+			// 	tq += time.Since(t).Seconds()
+			// }
+			// tq = tq / 5
+			// node[int(math.Log10(float64(i)))-1] = *Coordinate.NewNode(int(math.Log10(float64(i)))*cx1/num, int(tq)) // us
+			A := td(i)
+
+			t := time.Now()
+			sort(A)
+			tq := time.Since(t).Nanoseconds()
+			fmt.Println(time.Since(t))
+			node[int(math.Log10(float64(i)))-1] = *Coordinate.NewNode(int(math.Log10(float64(i)))*cx1/num, int(tq/100000)) // us
 		} else {
 			A := td(i)
 
@@ -156,7 +163,7 @@ func testTime(sort func([]int), td func(int) []int, rd bool) []Coordinate.Node {
 			sort(A)
 			tq := time.Since(t).Nanoseconds()
 			fmt.Println(time.Since(t))
-			node[int(math.Log10(float64(i)))-1] = *Coordinate.NewNode(int(math.Log10(float64(i)))*cx1/num, int(tq/1000)) // us
+			node[int(math.Log10(float64(i)))-1] = *Coordinate.NewNode(int(math.Log10(float64(i)))*cx1/num, int(tq/100000)) // us
 		}
 
 	}
