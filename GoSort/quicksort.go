@@ -15,19 +15,20 @@ func QuickSort(A []int) {
 	j := l - 1
 	// fmt.Println("i:", i, " j: ", j, A)
 	for i < j {
-		for ; j > i; j-- {
-			if A[j] <= val {
-				swap(&A[i], &A[j])
-				break
-			}
+		for j > i && A[j] >= val {
+			j--
 		}
-		for ; i < j; i++ {
-			if A[i] > val {
-				swap(&A[i], &A[j])
-				break
-			}
+		if i < j {
+			A[i] = A[j]
+		}
+		for i < j && A[i] <= val {
+			i++
+		}
+		if i < j {
+			A[j] = A[i]
 		}
 	}
+	A[i] = val
 	// A[i] = val
 	// fmt.Println("i:", i, " j: ", j, A)
 	if i > 1 {

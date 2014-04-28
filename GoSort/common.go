@@ -1,5 +1,11 @@
 package GoSort
 
+var (
+	n, sorted int
+	ch        chan []int
+	done      = make(chan bool)
+)
+
 func swap(a, b *int) {
 	c := *a
 	(*a) = (*b)

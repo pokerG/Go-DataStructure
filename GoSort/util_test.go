@@ -9,7 +9,7 @@ const smallDataSize = 512
 
 const mediumDataSize = 16384
 
-const largeDataSize = 65536
+const largeDataSize = 10000
 
 func testDataSorted() []int {
 	input := make([]int, largeDataSize)
