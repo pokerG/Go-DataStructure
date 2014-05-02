@@ -1,6 +1,7 @@
 package matrixGraph
 
 import (
+	"container/heap"
 	"fmt"
 	// "sort"
 )
@@ -14,9 +15,12 @@ type Graph struct {
 }
 
 type edges struct {
-	cost       int
 	begin, end int
+	cost       int
+	inHeap     bool //use in prioityQueue
 }
+
+var Edges []edges
 
 func NewGraph() *Graph {
 	g := &Graph{}
@@ -24,10 +28,16 @@ func NewGraph() *Graph {
 	fmt.Scanf("%d %d\n", &g.n, &g.e)
 	fmt.Println("Please input the edge(x y w)")
 	g.edge = make([]int, g.n*g.n)
+	Edges = make([]edges, g.e)
 
 	for i := 0; i < g.e; i++ {
 		var x, y, w int
 		fmt.Scanf("%d %d %d\n", &x, &y, &w)
+
+		Edges[i].begin = x
+		Edges[i].end = y
+		Edges[i].cost = w
+		Edges[i].inHeap = false // -false is not in heap
 
 		g.edge[x*g.n+y] = w
 	}
@@ -188,6 +198,47 @@ func (a *Graph) Dijkstra() []int {
 	return dis
 }
 
+func (a *Graph) DijkstraHeap() []int { //use heap optimize dijstra
+	this := a.copy()
+	// fmt.Println(&a, &this)
+
+	dis := make([]int, this.n)
+
+	h := &priorityQueue{}
+	heap.Init(h)
+
+	for _, v := range Edges {
+		if v.begin == 0 {
+			v.inHeap = true
+			heap.Push(h, &space{v.end, v.cost, -1})
+		}
+	}
+
+	for i := 0; i < this.n; i++ {
+		e := heap.Pop(h).(*space)
+
+		v := e.end
+
+		dis[v] = e.cost
+		for i, _ := range Edges {
+			if Edges[i].begin == v {
+				if Edges[i].inHeap {
+					for i, _ := range *h {
+						if (*h)[i].end == Edges[i].end {
+							h.update((*h)[i], (*h)[i].end, e.cost+Edges[i].cost)
+						}
+					}
+				} else {
+					heap.Push(h, &space{Edges[i].end, e.cost + Edges[i].cost, -1})
+				}
+			}
+		}
+
+	}
+	return dis
+
+}
+
 func (a *Graph) Floyd() []int {
 	var d, p []int
 	this := a.copy()
@@ -206,6 +257,12 @@ func (a *Graph) Floyd() []int {
 	}
 	for k := 0; k < this.n; k++ {
 		for i := 0; i < this.n; i++ {
+
+			aki := d[i*this.n+k]
+			if aki == infinity { // ignore the path of not exist
+				continue
+			}
+
 			for j := 0; j < this.n; j++ {
 				if d[i*this.n+k]+d[k*this.n+j] < d[i*this.n+j] {
 					d[i*this.n+j] = d[i*this.n+k] + d[k*this.n+j]
@@ -216,6 +273,7 @@ func (a *Graph) Floyd() []int {
 	}
 	return d
 }
+
 func (a *Graph) copy() *Graph {
 	this := &Graph{}
 	this.n = a.n
