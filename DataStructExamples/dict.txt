@@ -1,3 +1,11 @@
-you-你
-i-我
-student-学生
+the-这个
+value-价值
+should-应该
+it-它
+of-的
+a-一个
+we-我们
+us-我们的
+with-和
+to-to
+will-将

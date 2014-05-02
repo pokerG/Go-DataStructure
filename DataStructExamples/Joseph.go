@@ -1,93 +1,46 @@
 package main
 
 import (
-	// "errors"
 	"fmt"
 )
 
-type Node struct {
-	data int
-	next *Node
+type Memunit struct {
+	id   int
+	next *Memunit
+	pre  *Memunit
 }
 
-type LinkList struct {
-	phead *Node
-	ptail *Node
-	len   int
-}
+var head, cur *Memunit
 
-func GetNode(i int) *Node {
-	pNode := &Node{i, nil}
-	// if pNode != nil {
-	// 	err := errors.New("Error,the memory is not enough!")
-	// 	panic(err)
-	// }
-	return pNode
-}
-
-func (this *LinkList) Init() {
-	p := GetNode(1)
-	this.phead = p
-	this.ptail = p
-	p.next = this.phead
-	this.len = 1
-}
-
-func (this *LinkList) Insert(n int) {
-
-	i := 0
-	var pNew *Node
-	for i = 2; i <= n; i++ {
-		pNew = GetNode(i)
-		this.ptail.next = pNew
-		this.ptail = pNew
-		pNew.next = this.phead
-		this.len++
+func run(m int) {
+	for i := 2; i <= m; i++ {
+		cur = cur.next
 	}
-}
-
-func (this *LinkList) Print() {
-	pCur := this.phead
-	for {
-		fmt.Printf("No:%d is killed.\n", pCur.data)
-		pCur = pCur.next
-		if pCur == this.phead {
-			break
-		}
-
-	}
-	fmt.Printf("The length of the List: %d\n", this.len)
-}
-
-func joseph(plist *LinkList, m int) {
-	pPre := plist.ptail
-	pCur := plist.phead
-	var i int
-	if plist.len != 1 {
-		i = 0
-	}
-
-	for i < m-1 {
-		pPre = pPre.next
-		i++
-		pCur = pPre.next
-		pPre.next = pCur.next
-		plist.len--
-	}
-
-	fmt.Printf("Winner is %d\n", pPre.data)
+	cur.pre.next = cur.next
+	cur.next.pre = cur.pre
+	fmt.Printf("No:%d is killed.\n", cur.id)
+	cur = cur.next
 }
 
 func main() {
-	n := 0
-	pList := &LinkList{}
-	fmt.Println("Please input the length of the Circle list: ")
-	fmt.Scanf("%d\n", &n)
-	m := 0
-	fmt.Println("Please input the stop point: ")
-	fmt.Scanf("%d\n", &m)
-	pList.Init()
-	pList.Insert(n)
-	pList.Print()
-	joseph(pList, m)
+	var n, m int
+	fmt.Scanf("%d %d", &n, &m)
+	head = &Memunit{}
+	cur = head
+	for i := 1; i <= n; i++ {
+		cur.id = i
+		if i != n {
+			cur.next = &Memunit{}
+		} else {
+			cur.next = head
+		}
+		cur.next.pre = cur
+		cur = cur.next
+	}
+	cur = head
+	for cur.next != cur {
+		run(m)
+	}
+	fmt.Printf("Winner is %d\n", cur.id)
+	return
 }

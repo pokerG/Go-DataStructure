@@ -7,41 +7,34 @@ import (
 func MergeSortP(A []int) {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 	n = len(A)
-	ch = make(chan []int, n)
-	test := make(chan bool)
-	close(test)
-	ch <- A
-f:
-	for {
-		select {
-		case <-done:
-			// fmt.Println("@@@")
-			break f
-		case <-test:
-			// fmt.Println("!!!")
-			go msp()
-		}
+	s := make(chan bool)
 
-	}
+	go msp(A, s)
+	<-s
 
 }
 
-func msp() {
-	var slc []int
-	slc = <-ch
-	l := len(slc)
+func msp(A []int, s chan bool) {
+	l := len(A)
 	if l < 2 {
+		s <- true
 		return
 	}
 	if l < 7 {
-		InsertSort(slc)
+		InsertSort(A)
+		s <- true
 		return
 	}
+
 	middle := l / 2
-	left := slc[:middle]
-	right := slc[middle:]
-	ch <- left
-	ch <- right
+	left := A[:middle]
+	right := A[middle:]
+	s1 := make(chan bool)
+	s2 := make(chan bool)
+	go msp(left, s1)
+	go msp(right, s2)
+	<-s1
+	<-s2
 	result := make([]int, 0, l)
 	li := 0
 	ll := len(left)
@@ -62,8 +55,6 @@ func msp() {
 	} else if ri < rl {
 		result = append(result, right[ri:]...)
 	}
-	copy(slc, result)
-	if len(slc) == n {
-		done <- true
-	}
+	copy(A, result)
+	s <- true
 }
