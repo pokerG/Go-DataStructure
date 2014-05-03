@@ -4,8 +4,7 @@ import (
 	"container/heap"
 )
 
-// use in dijkstra
-type space struct { // dis from 0 to end
+type space struct { // dis from x to end , x have know
 	end   int
 	cost  int
 	index int

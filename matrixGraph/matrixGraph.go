@@ -1,3 +1,8 @@
+//This package achieve graph's create (use array struct) and some traversal algorithm
+//inlude Kruskal Prim Dijkstra Floyd
+//Dijstra and Prim use max heap to optimize
+//
+//Copytright (C) 2014 by pokerG <pokerfacehlg@gmail.com>
 package matrixGraph
 
 import (
@@ -22,6 +27,7 @@ type edges struct {
 
 var Edges []edges
 
+//NewGraph creates a new Graph
 func NewGraph() *Graph {
 	g := &Graph{}
 	fmt.Println("Please input the number of node and edge(n e)")
@@ -44,6 +50,7 @@ func NewGraph() *Graph {
 	return g
 }
 
+//Print the adjacency matrix
 func (this *Graph) Print() {
 	fmt.Printf("The Graph have %d nodes and %d edges\n", this.n, this.e)
 	for i := 0; i < this.n; i++ {
@@ -54,6 +61,8 @@ func (this *Graph) Print() {
 	}
 }
 
+//Kruskal
+//use Disjoint Set
 func (a *Graph) Kruskal() {
 	var bnf, edf int
 	var parent [maxSize]int
@@ -81,6 +90,8 @@ func (a *Graph) Prim() {
 	this := a.copy()
 	lowcost = make([]int, this.n)
 	closet = make([]int, this.n)
+	// change to undirected graph
+	// 0 convert to infinity
 	for i, _ := range this.edge {
 		if this.edge[i] != 0 {
 			this.edge[i%this.n*this.n+i/this.n] = this.edge[i]
@@ -113,12 +124,53 @@ func (a *Graph) Prim() {
 				closet[j] = k
 			}
 		}
-		// fmt.Println("!!!")
-		// fmt.Println(lowcost)
-		// fmt.Println(closet)
 	}
 }
 
+//Use max heap to optimize
+func (a *Graph) PrimHeap() {
+	this := a.copy()
+	// change to undirected graph
+	// 0 convert to infinity
+	for i, _ := range this.edge {
+		if this.edge[i] != 0 {
+			this.edge[i%this.n*this.n+i/this.n] = this.edge[i]
+		}
+		if this.edge[i] == 0 {
+			this.edge[i] = infinity
+		}
+	}
+
+	h := &priorityQueue{}
+	heap.Init(h)
+
+	var vis []bool
+	vis = make([]bool, this.n)
+	vis[0] = true
+
+	var pre int // record the begin node
+
+	for i := 0; i < this.n; i++ {
+		if this.edge[i] != infinity {
+			heap.Push(h, &space{i, this.edge[i], -1})
+		}
+	}
+	pre = 0
+	for i := 1; i < this.n; i++ {
+		e := heap.Pop(h).(*space)
+		v := e.end
+		vis[v] = true
+		fmt.Println("(", pre, ",", v, ",", e.cost, ")")
+		pre = v
+		for i := 0; i < this.n; i++ {
+			if this.edge[v*this.n+i] != infinity && !vis[i] {
+				heap.Push(h, &space{i, this.edge[v*this.n+i], -1})
+			}
+		}
+	}
+}
+
+//Use in Kruskal
 func newEdges(g *Graph) []edges {
 	var e []edges
 	e = make([]edges, g.e)
@@ -137,6 +189,7 @@ func newEdges(g *Graph) []edges {
 	return e
 }
 
+//Use in Kruskal
 func sort(e []edges) {
 	for j := 0; j < len(e)-1; j++ {
 		for i := 0; i < len(e)-1-j; i++ {
@@ -149,6 +202,7 @@ func sort(e []edges) {
 	}
 }
 
+//Use in Kruskal
 func find(x int, p *[maxSize]int) int {
 	if x == p[x] {
 		return x
@@ -165,6 +219,8 @@ func (a *Graph) Dijkstra() []int {
 	// fmt.Println(&a, &this)
 	used = make([]bool, this.n)
 	dis = make([]int, this.n)
+
+	// 0 convert to infinity
 	for i, _ := range this.edge {
 		if this.edge[i] == 0 {
 			this.edge[i] = infinity
@@ -198,7 +254,8 @@ func (a *Graph) Dijkstra() []int {
 	return dis
 }
 
-func (a *Graph) DijkstraHeap() []int { //use heap optimize dijstra
+//Use max heap to optimize
+func (a *Graph) DijkstraHeap() []int {
 	this := a.copy()
 	// fmt.Println(&a, &this)
 
@@ -245,6 +302,7 @@ func (a *Graph) Floyd() []int {
 	d = make([]int, this.n*this.n)
 	p = make([]int, this.n*this.n)
 
+	// 0 convert to infinity
 	for i, _ := range this.edge {
 		if this.edge[i] == 0 {
 			this.edge[i] = infinity
@@ -274,6 +332,7 @@ func (a *Graph) Floyd() []int {
 	return d
 }
 
+//prevent destroy the primary data
 func (a *Graph) copy() *Graph {
 	this := &Graph{}
 	this.n = a.n

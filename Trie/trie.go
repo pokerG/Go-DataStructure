@@ -1,6 +1,11 @@
+//This package achieve Trie
+//Trie is tree struct mapTrieost operations are O(log n),
+//and it allows for finding similar elements.
+//
+//Copytright (C) 2014 by pokerG <pokerfacehlg@gmail.com>
 package Trie
 
-//Trie is tree struct mapTrieost operations are O(log n), and it allows for finding similar elements.
+//
 // type Trie interface {
 // 	Add(string, interface{}) error
 // 	Get(string) (interface{}, bool)

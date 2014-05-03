@@ -1,7 +1,12 @@
+//This package provides some sort way
+//
+//Copytright (C) 2014 by pokerG <pokerfacehlg@gmail.com>
 package GoSort
 
 import ()
 
+//Bubble sort
+// O(n^2) running time
 func BubbleSort(A []int) {
 	flag := true
 	l := len(A)

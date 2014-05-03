@@ -8,6 +8,11 @@ import (
 	"strings"
 )
 
+/*test data:
+5x^3+x^2+10x+2
+x^4+7x^2+2x
+*/
+
 func main() {
 	var m1, m2 string
 	fmt.Println("Please input the first multinomial")
@@ -44,6 +49,7 @@ func menu() {
 	fmt.Sprintln("0 is Exit")
 }
 
+//EquationTolist convert string to linkedlsit
 func EquationToList(m string) *LinkedList.LinkedList {
 	l := LinkedList.NewLinkedList()
 	fmt.Println(m)
@@ -127,12 +133,14 @@ func PolySub(l1, l2 *LinkedList.LinkedList) *LinkedList.LinkedList {
 	return l
 }
 
+//getData return the ratio or index
 func getData(d *LinkedList.Node, n int) int {
 	v := reflect.ValueOf(d.Data)
 	b := int(v.Index(n).Int())
 	return b
 }
 
+//MultOneTerm use the item from the first multinomial to mul the second multinomial
 func MultOneTerm(n *LinkedList.Node, l *LinkedList.LinkedList) *LinkedList.LinkedList {
 	var newn [2]int
 	n0 := getData(n, 0)
@@ -153,6 +161,9 @@ func MultOneTerm(n *LinkedList.Node, l *LinkedList.LinkedList) *LinkedList.Linke
 func PolyMulti(l1, l2 *LinkedList.LinkedList) *LinkedList.LinkedList {
 	n := l1.Head
 	l := LinkedList.NewLinkedList()
+
+	//use each item rom the first multinomial to mul the second multinomial
+	//then add these mutinomial
 	for ; n != nil; n = n.Next {
 		h := MultOneTerm(n, l2)
 		l = PolyAdd(l, h)

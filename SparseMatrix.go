@@ -9,6 +9,7 @@ type Triple struct {
 	data int
 }
 
+//MatrixZip make the two-dimensional array zip to Triple
 func MatrixZip(arr [][]int) []Triple {
 	tri := make([]Triple, 1)
 	p := 0
@@ -26,6 +27,7 @@ func MatrixZip(arr [][]int) []Triple {
 	return tri
 }
 
+//MatrixUZip convert Triple to two-dimensional array
 func MatrixUZip(tri []Triple) [][]int {
 	var arr [][]int
 	arr = make([][]int, 0)
@@ -44,6 +46,7 @@ func MatrixUZip(tri []Triple) [][]int {
 	return arr
 }
 
+//TransposeSMatrix Triple transposition
 func TransposeSMatrix(triA []Triple) []Triple {
 	triB := make([]Triple, 1)
 	triB[0].i = triA[0].j

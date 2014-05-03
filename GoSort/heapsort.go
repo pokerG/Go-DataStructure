@@ -1,3 +1,6 @@
+//This package provides some sort way
+//
+//Copytright (C) 2014 by pokerG <pokerfacehlg@gmail.com>
 package GoSort
 
 import (

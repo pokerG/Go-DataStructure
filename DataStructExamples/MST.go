@@ -5,6 +5,7 @@ import (
 	"fmt"
 	// "os"
 	// "strings"
+	"math"
 	"matrixGraph"
 	// "sort"
 )
@@ -44,9 +45,10 @@ func main() {
 	dis := g.Dijkstra()
 	fmt.Println(dis)
 	p := g.Floyd()
-	for i := 0; i < 5; i++ {
-		for j := 0; j < 5; j++ {
-			fmt.Print(p[i*5+j], " ")
+	l := int(math.Sqrt(float64(len(p))))
+	for i := 0; i < l; i++ {
+		for j := 0; j < l; j++ {
+			fmt.Print(p[i*l+j], " ")
 		}
 		fmt.Println("")
 	}

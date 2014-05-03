@@ -6,6 +6,21 @@ import (
 	"reflect"
 )
 
+/*
+test data:
+4,4
+1 1 1 0
+1 0 1 1
+1 1 0 0
+0 1 1 2
+
+4,4
+1 1 1 1
+1 0 1 1
+1 1 0 0
+0 1 0 2
+2 is export
+*/
 type Map struct {
 	i, j int
 }
@@ -25,7 +40,7 @@ func main() {
 	visited = make([][]bool, 0)
 	visited = append(visited, make([]bool, y+2))
 	for i := 1; i <= x; i++ {
-		visited = append(visited, make([]bool, y+1))
+		visited = append(visited, make([]bool, y+2))
 		maze = append(maze, make([]int, y+2))
 		for j := 1; j <= y; j++ {
 			fmt.Scanf("%d", &maze[i][j])
@@ -54,19 +69,7 @@ func DFS(i, j int) bool {
 	for s.Empty() == nil {
 		m, _ := s.Top()
 		t := reflect.ValueOf(m)
-		// s.Print()
-		//fmt.Println(t.Field(0).Int(), t.Field(1).Int())
-		// fmt.Print("###")
-		// fmt.Println(i+w[0], j+h[0])
-		// fmt.Print("1!  ", maze[i+w[0]][j+h[0]])
-		// fmt.Println(i+w[1], j+h[1])
-		// fmt.Print("2!  ", maze[i+w[1]][j+h[1]])
-		// fmt.Println(i+w[2], j+h[2])
-		// fmt.Print("3!  ", maze[i+w[2]][j+h[2]])
-		// fmt.Println(i+w[3], j+h[3])
-		// fmt.Print("4!  ", maze[i+w[3]][j+h[3]])
-		// fmt.Print("$$$$$$$$$", maze[1][3])
-		// fmt.Println("")
+
 		v := Map{int(t.Field(0).Int()), int(t.Field(1).Int())}
 		// fmt.Println(v.i, v.j)
 		if maze[v.i][v.j] == 2 {
@@ -78,6 +81,7 @@ func DFS(i, j int) bool {
 			s.Push(Map{v.i + w[0], v.j + h[0]})
 			continue
 		}
+		// fmt.Println(v.i+w[1], v.j+h[1])
 		if !visited[v.i+w[1]][v.j+h[1]] && maze[v.i+w[1]][v.j+h[1]] != 0 {
 			visited[v.i+w[1]][v.j+h[1]] = true
 			s.Push(Map{v.i + w[1], v.j + h[1]})

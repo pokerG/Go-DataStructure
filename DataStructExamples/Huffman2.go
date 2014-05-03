@@ -1,3 +1,6 @@
+//This is huffmancode example
+//Use max heap
+//Copytright (C) 2014 by pokerG <pokerfacehlg@gmail.com>
 package main
 
 import (
@@ -7,12 +10,22 @@ import (
 
 /*
 test data
+5
 a 0.15
 b 0.45
 c 0.25
 d 0.20
 e 0.08
+
+6
+a 0.15
+b 0.45
+c 0.25
+d 0.20
+e 0.08
+f 0.80
 */
+
 var n int = 5         //the number of leaf
 var m int = (2*n - 1) //the number of node
 const maxVal float64 = 10000.0
@@ -26,6 +39,7 @@ type HuffmanNode struct {
 	index                  int // the index in heap
 }
 
+//****** Down is priorityQueue ******
 type priorityQueue []*HuffmanNode
 
 func (this priorityQueue) Len() int {
@@ -67,12 +81,15 @@ func (this *priorityQueue) update(node *HuffmanNode, ch string, weight float64) 
 
 }
 
+//****** Up is priorityQueue ******
+
 type CodeType struct {
 	bits  []byte //bit string
 	start int    //code's start position in bits
 	ch    string
 }
 
+//Huffman build huffman tree
 func Huffman(tree []HuffmanNode) {
 	var i int
 	var f float64
@@ -98,6 +115,7 @@ func Huffman(tree []HuffmanNode) {
 	for i = n; i < m; i++ {
 		// for h.Len() > 0 {
 
+		//Use max heap accelerate the process of build tree
 		n1 := heap.Pop(h).(*HuffmanNode)
 		n2 := heap.Pop(h).(*HuffmanNode)
 		fmt.Println(n1, n2)
@@ -110,6 +128,7 @@ func Huffman(tree []HuffmanNode) {
 	}
 }
 
+//HuffmanCode use huffman tree make huffman code
 func HuffmanCode(code []CodeType, tree []HuffmanNode) {
 	var i, c, p int
 
@@ -135,6 +154,7 @@ func HuffmanCode(code []CodeType, tree []HuffmanNode) {
 
 }
 
+//HuffmanDecode use huffman tree decode huffman code
 func HuffmanDecode(tree []HuffmanNode) {
 	var i, j int = 0, 0
 	var s string

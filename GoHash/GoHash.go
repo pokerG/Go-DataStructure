@@ -1,3 +1,6 @@
+//This package provides three Hash functions
+//
+//Copytright (C) 2014 by pokerG <pokerfacehlg@gmail.com>
 package GoHash
 
 import (

@@ -1,3 +1,6 @@
+//This package achieve the closed hash table
+//
+//Copytright (C) 2014 by pokerG <pokerfacehlg@gmail.com>
 package ClosedHash
 
 import (
@@ -28,7 +31,7 @@ type HashTable struct {
 
 func hash(k int) int {
 	// fmt.Println(HashType)
-	switch HashType {
+	switch HashType { // choose the hash function you want use
 	case 0:
 		return GoHash.HashDiv(k, HashSize)
 	case 1:
@@ -52,7 +55,7 @@ func (this *HashTable) search(k int, c *int) (int, error) {
 		(*c)++
 		// fmt.Println(*c)
 		if *c < HashSize {
-			collision(&p, *c)
+			collision(&p, *c) //deal with collision
 		} else {
 			break
 		}
@@ -65,6 +68,7 @@ func (this *HashTable) search(k int, c *int) (int, error) {
 	}
 }
 
+//Insert insert a new element into hash table
 func (this *HashTable) Insert(e ElemType) error {
 	c := 0
 	p, err := this.search(e.key, &c)
@@ -80,6 +84,7 @@ func (this *HashTable) Insert(e ElemType) error {
 
 }
 
+//Find search k from hash table
 func (this *HashTable) Find(k int) bool {
 	c := 0
 	// p, err := this.search(k, &c)
@@ -93,6 +98,7 @@ func (this *HashTable) Find(k int) bool {
 	}
 }
 
+//Delete delete k from hash table
 func (this *HashTable) Delete(k int) error {
 	c := 0
 	p, err := this.search(k, &c)
@@ -104,6 +110,8 @@ func (this *HashTable) Delete(k int) error {
 		return err
 	}
 }
+
+//Traverse print the hash table
 func (this *HashTable) Traverse(Vi func(int, ElemType)) {
 	fmt.Printf("Hase addr 0 ~ %d\n", HashSize)
 	for i := 0; i < HashSize; i++ {
@@ -117,6 +125,7 @@ func Print(p int, r ElemType) {
 	fmt.Printf("address = %d (%d,%d)\n", p, r.key, r.ord)
 }
 
+//NewHashTable creates and initializes a new hash table which have the size you give.
 func NewHashTable(size int) *HashTable {
 	h := &HashTable{}
 	h.count = 0
@@ -129,6 +138,7 @@ func NewHashTable(size int) *HashTable {
 	return h
 }
 
+//NewElem creates a new element hash table required
 func NewElem(key int, ord int) *ElemType {
 	return &ElemType{key, ord}
 }

@@ -1,3 +1,6 @@
+//This package is HeapSort
+//
+//Copytright (C) 2014 by pokerG <pokerfacehlg@gmail.com>
 package HeapSort
 
 import (
@@ -7,14 +10,17 @@ import (
 
 var HeapSize int
 
+//Parent return the node's parent
 func Parent(i int) int {
 	return int(math.Ceil(float64(i) / 2))
 }
 
+//Left return the node's lchild
 func Left(i int) int {
 	return 2 * i
 }
 
+//Right ret urn the node's rchild
 func Right(i int) int {
 	return 2*i + 1
 }
@@ -25,6 +31,7 @@ func swap(a, b *int) {
 	(*b) = c
 }
 
+//MaxHeapIFY keep the quality of max heap
 func MaxHeapIFY(A []int, i int) {
 	var largest int
 	l := Left(i)
@@ -44,6 +51,7 @@ func MaxHeapIFY(A []int, i int) {
 	}
 }
 
+//BuildMaxHeap build max heap
 func BuildMaxHeap(A []int) {
 	HeapSize = len(A) - 1
 	for i := int(math.Ceil(float64(len(A)) / 2)); i >= 1; i-- {

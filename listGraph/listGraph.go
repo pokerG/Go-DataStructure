@@ -1,3 +1,7 @@
+//This package achieve graph's create (use adjacency list) and some traversal algorithm
+//inlude TopoOrder Crucialpath FindArticul and Korasaju
+//
+//Copytright (C) 2014 by pokerG <pokerfacehlg@gmail.com>
 package listGraph
 
 import (
@@ -31,6 +35,8 @@ var ve, vl []int // use in Crucialpath
 var count int //use in FindArticul
 var dnf []int //use in FindArticul
 var low []int //use in FindArticul
+
+//NewGraph creates a new Graph
 func NewGraph() *Graph {
 	g := &Graph{}
 	var tail, head, weight int
@@ -50,6 +56,7 @@ func NewGraph() *Graph {
 	return g
 }
 
+//Print the adjacency list
 func (a *Graph) Print() {
 	for i := 0; i < a.n; i++ {
 		fmt.Print(i, ": ")
@@ -106,6 +113,7 @@ func (a *Graph) TopoOrder() {
 
 }
 
+//Use in TopoOrder
 func indegree(x int, g Graph) int {
 	inde := 0
 	for i := 0; i < g.n; i++ {
@@ -171,16 +179,9 @@ func (a *Graph) Crucialpath() {
 			}
 		}
 	}
-	// for i := 0; i < a.n; i++ {
-	// 	tmp := a.headlist[i].firstedge
-	// 	if tmp != nil {
-	// 		act[i*a.n+tmp.adjvex] = l(i, tmp.adjvex) - e(i, tmp.adjvex)
-	// 		fmt.Printf("From %d to %d : \t%d\t%d\t%d\n", i, tmp.adjvex, e(i, tmp.adjvex), l(i, tmp.adjvex), act[i*a.n+tmp.adjvex])
-	// 	}
-	// }
-
 }
 
+//Use in Crucialpath
 func (a *Graph) forward() {
 	q := Queue.NewGoQueueSize(a.n)
 	q.MakeNull()
@@ -203,19 +204,6 @@ func (a *Graph) forward() {
 		v := int(b.Int())
 
 		q.Delete()
-		/*for i := 0; i < a.n; i++ {
-			tmp := a.headlist[i].firstedge
-		flag:
-			for tmp != nil {
-				if tmp.adjvex == v {
-					if act[i*a.n+v] > 0 && ve[v] < ve[i]+act[i*a.n+v] {
-				ve[v] = ve[i] + act[i*a.n+v]
-			}
-					break flag
-				}
-				tmp = tmp.next
-			}
-		}*/
 
 		for i := 0; i < a.n; i++ {
 			if act[i*a.n+v] > 0 && ve[v] < ve[i]+act[i*a.n+v] {
@@ -238,6 +226,7 @@ func (a *Graph) forward() {
 	}
 }
 
+//Use in Crucialpath
 func (a *Graph) backward() {
 	q := Queue.NewGoQueueSize(a.n)
 	q.MakeNull()
@@ -266,14 +255,7 @@ func (a *Graph) backward() {
 
 		q.Delete()
 		tmp := b.headlist[v].firstedge
-		/*		for tmp != nil {
-						i := tmp.adjvex
-						if act[v*b.n+i] > 0 && vl[v] < vl[i]+act[v*b.n+i] {
-					vl[v] = vl[i] - act[v*b.n+i]
-				}
-						tmp = tmp.next
-					}
-		*/
+
 		for i := 0; i < b.n; i++ {
 			if act[v*b.n+i] > 0 && vl[v] < vl[i]+act[v*b.n+i] {
 				vl[v] = vl[i] - act[v*b.n+i]
@@ -295,6 +277,7 @@ func (a *Graph) backward() {
 	}
 }
 
+//Use in backward and Korasaju
 func (a *Graph) reverse() *Graph { //tail and head reverse
 	b := &Graph{}
 	b.n = a.n
@@ -314,46 +297,13 @@ func (a *Graph) reverse() *Graph { //tail and head reverse
 	return b
 }
 
+//Use in FindArticul
 func (a *Graph) deleteDirect() *Graph {
 	b := &Graph{}
 	b.n = a.n
 	b.e = a.e
 	b.headlist = make([]vertexhead, b.n)
-	// edge := make([]int, b.n*b.n)
-	// for i := 0; i < a.n; i++ {
-	// 	tmp := a.headlist[i].firstedge
-	// 	for tmp != nil {
-	// 		edge[i*a.n+tmp.adjvex] = tmp.cost
-	// 		edge[tmp.adjvex*a.n+i] = tmp.cost
-	// 		tmp = tmp.next
-	// 	}
-	// }
-	// // fmt.Println("!!")
-	// for i := 0; i < b.n; i++ {
-	// 	for j := 0; j < b.n; j++ {
-	// 		// fmt.Println(i*b.n+j, len(edge))
-	// 		if edge[i*b.n+j] > 0 {
-	// 			tmp := b.headlist[i].firstedge
-	// 			if tmp == nil {
-	// 				p := &node{}
-	// 				p.adjvex = j
-	// 				p.cost = edge[i*b.n+j]
-	// 				p.next = nil
-	// 				b.headlist[i].firstedge = p
-	// 			} else {
-	// 				p := tmp
-	// 				for tmp != nil {
-	// 					p = tmp
-	// 					tmp = tmp.next
-	// 				}
-	// 				tmp = &node{}
-	// 				tmp.adjvex = j
-	// 				tmp.next = nil
-	// 				p.next = tmp
-	// 			}
-	// 		}
-	// 	}
-	// }
+
 	for i := 0; i < a.n; i++ {
 		tmp := a.headlist[i].firstedge
 		for tmp != nil {
@@ -393,9 +343,9 @@ func (a *Graph) FindArticul() {
 	v := p.adjvex
 
 	//a.dfsArticul(v) fuck this!!!!!!
-	b.dfsArticul(v)
-	if count < b.n {
-		fmt.Print("0 ")
+	b.dfsArticul(v)  // from v to do dfs
+	if count < b.n { //at leat have two child tree
+		fmt.Print("0 ") //root is articul
 		for p.next != nil {
 			p = p.next
 			v = p.adjvex
@@ -406,15 +356,16 @@ func (a *Graph) FindArticul() {
 	}
 }
 
+//Use in dfsArticul
 func (a *Graph) dfsArticul(v int) {
-	count++
+	count++ //v is the countTH visiting node
 	min := count
 	dnf[v] = min
 	// fmt.Println("!!!", v)
 	for p := a.headlist[v].firstedge; p != nil; p = p.next {
 		w := p.adjvex
 		// fmt.Println("###", w)
-		if dnf[w] == 0 {
+		if dnf[w] == 0 { //if w not visited, w is v's child
 			a.dfsArticul(w)
 			if low[w] < min {
 				min = low[w]
@@ -424,7 +375,7 @@ func (a *Graph) dfsArticul(v int) {
 				fmt.Print(v, " ")
 			}
 
-		} else if dnf[w] < min {
+		} else if dnf[w] < min { //w have visited w is v's ancestor in spanning tree
 			min = dnf[w]
 		}
 	}
@@ -435,6 +386,7 @@ var visited []bool
 var inOrder []int
 
 // var count int
+
 func (a *Graph) Korasaju() {
 	k := 1
 	visited = make([]bool, a.n)
@@ -443,7 +395,7 @@ func (a *Graph) Korasaju() {
 		visited[i] = false
 	}
 	count = 0
-	for i := 0; i < a.n; i++ {
+	for i := 0; i < a.n; i++ { // forward direction dfs
 		if !visited[i] {
 			dfs(a, i)
 		}
@@ -452,7 +404,7 @@ func (a *Graph) Korasaju() {
 		visited[i] = false
 	}
 	b := a.reverse()
-	for i := b.n - 1; i >= 0; i-- {
+	for i := b.n - 1; i >= 0; i-- { //reverse direction dfs
 		v := inOrder[i]
 		if !visited[v] {
 			fmt.Printf("\nThe %dth connected component vertex: ", k)
@@ -464,6 +416,7 @@ func (a *Graph) Korasaju() {
 	}
 }
 
+//Use in Korasaju
 func dfs(g *Graph, x int) {
 	visited[x] = true
 	for p := g.headlist[x].firstedge; p != nil; p = p.next {
@@ -475,6 +428,7 @@ func dfs(g *Graph, x int) {
 	count++
 }
 
+//Use in Korasaju
 func revDfs(g *Graph, x int) {
 	visited[x] = true
 	fmt.Print(x, " ")

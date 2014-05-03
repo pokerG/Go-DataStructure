@@ -1,8 +1,12 @@
+//This package provides some sort way
+//
+//Copytright (C) 2014 by pokerG <pokerfacehlg@gmail.com>
 package GoSort
 
 import ()
 
-// InsertionSort  with O(n^2) running time.
+// InsertionSort
+//O(n^2) running time.
 func InsertSort(A []int) {
 	l := len(A)
 	if l < 2 {

@@ -1,3 +1,6 @@
+//This package provides some basically operate of linearlist which use linked list
+//
+//Copytright (C) 2014 by pokerG <pokerfacehlg@gmail.com>
 package LinkedList
 
 import (
@@ -11,18 +14,24 @@ type Node struct {
 	Next *Node
 }
 
+//Use linked list to achieve linearlist
 type LinkedList struct {
 	Head *Node
 }
 
+//NewNode creates a new node use in linkedlist
+//it have two arguements
+//Data is the value of element Next is the postion in linkedlist
 func NewNode(Data Datatype, Next *Node) *Node {
 	return &Node{Data, Next}
 }
 
+//NewLinkedList creates and initializes a new linkedlist
 func NewLinkedList() *LinkedList {
 	return &LinkedList{}
 }
 
+//Insert can insert a node to the linkedlist
 func (this *LinkedList) Insert(n Node) {
 	if (*this).Head == nil {
 		(*this).Head = &n
@@ -36,6 +45,9 @@ func (this *LinkedList) Insert(n Node) {
 	(*ptr).Next = &n
 }
 
+//Find can find the fist element which value = dat
+//return the node and successful sign
+//return  nil and false is not found
 func (this *LinkedList) Find(dat Datatype) (*Node, bool) {
 	ptr := (*this).Head
 
@@ -51,6 +63,8 @@ func (this *LinkedList) Find(dat Datatype) (*Node, bool) {
 	return nil, false
 }
 
+//Delete can delete the first element which value = dat
+//only if return nil  is delete successful
 func (this *LinkedList) Delete(dat Datatype) error {
 	_, b := this.Find(dat)
 	if !b {
@@ -75,6 +89,7 @@ func (this *LinkedList) Delete(dat Datatype) error {
 	return nil
 }
 
+//Print can print the elements of list
 func (this *LinkedList) Print() {
 	if (*this).Head == nil {
 		fmt.Println("**WARNING** Printing out an empty list")

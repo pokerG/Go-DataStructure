@@ -1,7 +1,7 @@
-/*
-	Convert between forest and binaryTree
-	use adjacency list
-*/
+//Convert between forest and binaryTree
+//use adjacency list
+//
+//Copytright (C) 2014 by pokerG <pokerfacehlg@gmail.com>
 
 package main
 
@@ -65,27 +65,35 @@ A B D H # # I # # E # # C F # J # # G # #
 */
 
 func main() {
+	//forest convert to binary tree
 	ct := CreateCT()
 
 	bt := ForestToBt(ct, -1)
 	BTPrint(bt)
 	fmt.Println("")
-	// ct := &CTree{}
-	// bt := CreateBT()
-	// BTPrint(bt)
-	// fmt.Println("")
-	// BtToForest(bt, ct, "")
-	// for i := 0; i < ct.n; i++ {
-	// 	for j := 0; j < ct.n; j++ {
-	// 		if ct.nodes[j].parent == i {
-	// 			tmp := ct.nodes[i].firstchild
-	// 			n := &CTNode{j, nil}
-	// 			ct.nodes[i].firstchild = n
-	// 			n.next = tmp
-	// 		}
-	// 	}
-	// }
-	// CTPrint(ct)
+
+	/*Careful!!!!!
+	  if you want to test the binary tree convert to Forest
+	  Please annotation the up code
+	  and use the down code
+	*/
+
+	/*ct := &CTree{}
+	bt := CreateBT()
+	BTPrint(bt)
+	fmt.Println("")
+	BtToForest(bt, ct, "")
+	for i := 0; i < ct.n; i++ {
+		for j := 0; j < ct.n; j++ {
+			if ct.nodes[j].parent == i {
+				tmp := ct.nodes[i].firstchild
+				n := &CTNode{j, nil}
+				ct.nodes[i].firstchild = n
+				n.next = tmp
+			}
+		}
+	}
+	CTPrint(ct)*/
 }
 
 func BtToForest(bt *Bnode, ct *CTree, s string) {
@@ -133,6 +141,7 @@ func Find(ct *CTree, s string) int {
 	}
 	return -1
 }
+
 func ForestToBt(ct *CTree, parent int) *Bnode {
 	var tmp int = -1
 	bt := &Bnode{}
@@ -201,6 +210,7 @@ func CreateCT() *CTree {
 	return t
 }
 
+//BTPrint print the binary tree use lists
 func BTPrint(bt *Bnode) {
 	if bt != nil {
 		fmt.Print(bt.data)
@@ -216,6 +226,7 @@ func BTPrint(bt *Bnode) {
 	}
 }
 
+//CTPrint print the forest
 func CTPrint(ct *CTree) {
 	for i := 0; i < ct.n; i++ {
 		fmt.Print(ct.nodes[i].data, " ", ct.nodes[i].parent, ":  ")

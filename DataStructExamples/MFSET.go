@@ -1,7 +1,6 @@
-/*
-	Disjoint Set
-	@pokerG
-*/
+//Disjoint Set
+//
+//Copytright (C) 2014 by pokerG <pokerfacehlg@gmail.com
 package main
 
 import (
@@ -18,6 +17,7 @@ import (
 1 5
 5 9
 */
+
 const n int = 10
 
 type node struct {
@@ -31,7 +31,7 @@ type Mfset struct {
 func (this *Mfset) Union(a, b int) {
 	a = this.Find(a)
 	b = this.Find(b)
-	if this.element[a].count > this.element[b].count {
+	if this.element[a].count > this.element[b].count { //path compression
 		this.element[b].father = a
 		this.element[a].count += this.element[b].count
 	} else {

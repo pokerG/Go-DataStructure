@@ -1,3 +1,6 @@
+//This is huffmancode example
+//
+//Copytright (C) 2014 by pokerG <pokerfacehlg@gmail.com>
 package main
 
 import (
@@ -12,6 +15,7 @@ c 0.25
 d 0.20
 e 0.08
 */
+
 const n int = 5         //the number of leaf
 const m int = (2*n - 1) //the number of node
 const maxVal float64 = 10000.0
@@ -29,6 +33,7 @@ type CodeType struct {
 	ch    string
 }
 
+//Huffman build huffman tree
 func Huffman(tree []HufmTree) {
 	var i, j, p1, p2 int
 	var small1, small2, f float64
@@ -72,6 +77,7 @@ func Huffman(tree []HufmTree) {
 	}
 }
 
+//HuffmanCode use huffman tree make huffman code
 func HuffmanCode(code []CodeType, tree []HufmTree) {
 	var i, c, p int
 	var cd CodeType //buffer
@@ -94,6 +100,7 @@ func HuffmanCode(code []CodeType, tree []HufmTree) {
 	}
 }
 
+//HuffmanDecode use huffman tree decode huffman code
 func HuffmanDecode(tree []HufmTree) {
 	var i, j int = 0, 0
 	var s string

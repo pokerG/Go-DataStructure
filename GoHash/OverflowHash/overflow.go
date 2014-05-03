@@ -1,3 +1,6 @@
+//This package achieve the  hash table have overflow list
+//
+//Copytright (C) 2014 by pokerG <pokerfacehlg@gmail.com>
 package OverflowHash
 
 import (
@@ -27,7 +30,7 @@ type HashTable struct {
 }
 
 func hash(k int) int {
-	switch HashType {
+	switch HashType { // choose the hash function you want use
 	case 0:
 		return GoHash.HashDiv(k, HashSize)
 	case 1:
@@ -54,6 +57,7 @@ func (this *HashTable) search(k int) (int, *ElemType) {
 	return p, tmp
 }
 
+//Insert insert a new element into hash table
 func (this *HashTable) Insert(e ElemType) error {
 	p, r := this.search(e.key)
 	if r != nil {
@@ -77,6 +81,7 @@ func (this *HashTable) Insert(e ElemType) error {
 
 }
 
+//Find search k from hash table
 func (this *HashTable) Find(k int) bool {
 	// p, r := this.search(k)
 	_, r := this.search(k)
@@ -89,6 +94,7 @@ func (this *HashTable) Find(k int) bool {
 	}
 }
 
+//Delete delete k from hash table
 func (this *HashTable) Delete(k int) error {
 	p := hash(k)
 	tmp := &this.elem[p]
@@ -115,6 +121,7 @@ func (this *HashTable) Delete(k int) error {
 
 }
 
+//Traverse print the hash table
 func (this *HashTable) Traverse(Vi func(ElemType)) {
 	fmt.Printf("Hase addr 0 ~ %d\n", HashSize)
 	for i := 0; i < HashSize; i++ {
@@ -132,6 +139,7 @@ func Print(r ElemType) {
 	}
 }
 
+//NewHashTable creates and initializes a new hash table which have the size you give.
 func NewHashTable(size int) *HashTable {
 	h := &HashTable{}
 	h.count = 0
@@ -144,6 +152,7 @@ func NewHashTable(size int) *HashTable {
 	return h
 }
 
+//NewElem creates a new element hash table required
 func NewElem(key int, ord int) *ElemType {
 	return &ElemType{key, ord, nil}
 }

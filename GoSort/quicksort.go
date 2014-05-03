@@ -1,9 +1,14 @@
+//This package provides some sort way
+//
+//Copytright (C) 2014 by pokerG <pokerfacehlg@gmail.com>
 package GoSort
 
 import (
 // "fmt"
 )
 
+//Quick sort
+//O(n log n) running time.
 func QuickSort(A []int) {
 	l := len(A)
 	val := A[0]

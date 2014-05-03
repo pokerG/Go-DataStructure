@@ -1,3 +1,6 @@
+//This package provides some sort way
+//
+//Copytright (C) 2014 by pokerG <pokerfacehlg@gmail.com>
 package GoSort
 
 import (
@@ -5,6 +8,9 @@ import (
 	"runtime"
 )
 
+//Quick sort parallel
+//O(n log n) / p running time. p is the number of cpu
+//use channel queue
 func QuickSortP(A []int) {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 	n = len(A)
